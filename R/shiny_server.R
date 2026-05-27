@@ -437,15 +437,10 @@ resolve_shiny_startup_model <- function(model = NULL, selected_model = NULL) {
     return(trimws(selected_model))
   }
 
-  # The richer .Rprofile/.Renviron console-profile resolution lives in the
-  # optional companion package aisdk.console. When it is not installed, fall
-  # back to prompting the user (NULL); the Shiny config UI sets the model.
+  # The richer .Rprofile/.Renviron startup-model resolution is provided by
+  # aisdk core; fall back to prompting the user (NULL) on any error.
   startup_model <- tryCatch(
-    if (requireNamespace("aisdk.console", quietly = TRUE)) {
-      aisdk.console::resolve_console_startup_model()
-    } else {
-      NULL
-    },
+    aisdk::resolve_console_startup_model(),
     error = function(e) NULL
   )
   model_id <- trimws(startup_model$model_id %||% "")

@@ -8,14 +8,12 @@ test_that("Shiny chat session normalization accepts existing sessions", {
 })
 
 test_that("Shiny chat session normalization reuses console startup model", {
-  # The .Rprofile/.Renviron startup-model resolution is provided by the
-  # optional companion package aisdk.console; this is an integration test.
-  skip_if_not_installed("aisdk.console")
+  # The .Rprofile/.Renviron startup-model resolution is provided by aisdk core.
   testthat::local_mocked_bindings(
     resolve_console_startup_model = function(...) {
       list(model_id = "mock:from-console", source = "test", profile = NULL)
     },
-    .package = "aisdk.console"
+    .package = "aisdk"
   )
 
   chat <- aisdk.shiny:::normalize_shiny_chat_session()
